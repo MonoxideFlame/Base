@@ -21,9 +21,9 @@ Malloc is HUGE. And it is SLOW.
 
 The reason why this is is because we expect the function to do too much. We expect it to just give us as much memory, all contiguous, whenever we want it. 
 
-We give it back in the worst way possible too, as a fragmented list, in small pieces. It also has no transparency. Its easy to free the same pointer twice, and there is no enforement of a lifetime on the objects in question.
+We give it back in the worst way possible too, as a fragmented list, in small pieces. It also has no transparency. Its easy to free the same pointer twice, and there is no enforcement of a lifetime on the objects in question.
 
-Relaxing some of these requirements on the API is enough to massively improve the performance of allocation, at the cost of enforcing a lifetime on our allocations. We can no longer allocate and deallocate in whatever order. 
+Relaxing some of these requirements on the API is enough to massively improve the performance of allocation, at the cost of enforcing a lifetime on our allocations - we can no longer allocate and deallocate in whatever order. 
 
 # What allocator should we use?
 
