@@ -40,6 +40,14 @@ Malloc still works for everything else, though I only use it sparingly. This sys
 C-strings are a pain. They are also a massive security vulnerability. So I have included a count based string API. 
 
 
+# Logging & Errors:
+
+
+These are hard to implement, because it requires calling a syscall. This slows us down. So I have both a memory bounded Error logging system (accumulates the first error, and does not accumumate future errors). 
+
+It also has an unbounded Error (MESSAGE), where it just keeps appending messages onto the end of the log. We simply pass a log_context to a function that uses it. It plays well with function composition and is minimal. It works in an almost Monadic way (as monadic as you can get in C), where we can create a function called runWithLogs, which will allow us to run it with a log_context, with different composition rules for ERRORS and MESSAGES.
+
+
 # Random Numbers:
 
 Permutation Congruential Generators. [https://www.pcg-random.org/index.html]
