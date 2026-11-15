@@ -11,6 +11,10 @@ Embedded systems need this. I can always rewrite a program written to use arenas
 
 
 
+Based on: ![https://youtube.com/playlist?list=PLT6InxK-XQvNKTyLXk6H6KKy12UYS_KDL&si=MzzQMOvapxRinwDB]
+
+
+
 # Why use a Custom Allocator?
 
 Malloc is HUGE. And it is SLOW. 
