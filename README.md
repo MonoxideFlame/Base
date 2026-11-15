@@ -31,7 +31,7 @@ The simplest allocator is a Linear Allocator, or an Arena. Its a block of memory
 This is useful because it lets us re-use memory.
 
 In a game, each frame has some data that needs to be allocated and rewritten all the time. Its easy to then reset the pointer to 0 when a frame ends,
-after which, we start allocating again. We get good cache locality and everything remains very fast. It has use in all kinds of places. 
+after which, we start allocating again in the same block. We get good cache locality and everything remains very fast. It has use in all kinds of places. 
 
 I also built this on top of mmap(), so I could use the existing virtual memory space to grow these arenas dynamically. 
 
