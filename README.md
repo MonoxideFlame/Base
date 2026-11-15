@@ -5,6 +5,11 @@ I use this as a minimal utility library. I wish to make this independent of the 
 
 Right now, this implements basic allocators, some minimal logging, and a few machine related constants and a PCG random number generator. 
 
+I also want many of my programs satisfy certain properties, such as being bounded in their memory footprint. Thus, custom allocators work great for that purpose. 
+
+Embedded systems need this. I can always rewrite a program written to use arenas that is memory bounded with any other allocator on an embedded device. It makes the programs more robust and more pure. 
+
+
 
 # Why use a Custom Allocator?
 
