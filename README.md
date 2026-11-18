@@ -40,7 +40,7 @@ each node, we just allocate all the nodes to the same memory bucket (Arena), and
 while keeping things fast. 
 
 Pool allocators also work very well. However, they have a fixed size. So these are used in very specific situations where the order of allocation and deallocation is unknown, but the size is fixed. 
-Malloc still works for everything else, though I only use it sparingly. This system helps me completely eliminate memory leaks. They are very easy to build on top of the Arena API
+Malloc still works for everything else, though I only use it sparingly. This system helps me completely eliminate memory leaks. Pool Allocators are very easy to build on top of the Arena API
 
 
 # Strings
@@ -54,7 +54,31 @@ C-strings are a pain. They are also a massive security vulnerability. So I have 
 
 These are hard to implement, because it requires calling a syscall. This slows us down. So I have both a memory bounded Error logging system (accumulates the first error, and does not accumumate future errors). 
 
-It also has an unbounded Error (MESSAGE), where it just keeps appending messages onto the end of the log. We simply pass a log_context to a function that uses it. It plays well with function composition and is minimal. It works in an almost Monadic way (as monadic as you can get in C), where we can create a function called runWithLogs, which will allow us to run it with a log_context, with different composition rules for ERRORS and MESSAGES.
+It also has an unbounded Error (MESSAGE), where it just keeps appending messages onto the end of the log. We simply pass a log_context to a function that uses it. It plays well with function composition and is minimal. It is easy to extend it to a writer monad (as monadic as you can get in C), where we can create a function called runWithLogs, which will allow us to run it with a log_context, with different composition rules for ERRORS and MESSAGES. Here is a macro to instatiate a Result Monad on a type T. 
+
+```
+#define DECLARE_RESULT_MONAD(T, type_name, wrap_func, bind_func) \
+typedef struct \
+     T value;\
+     uint8_t code;\
+} type_name;\
+type_name wrap_func (T value) {\
+     type_name result;\
+     result.value = value;\
+     result.code = 0;\
+     return result;\
+}\
+type_name bind_func ( (type_name)(*f)(T), (T)(*g)(T), type_name x ){\
+     if(x.code == 0){\
+          if(f != nullptr){\
+               return f(x.value);\
+          } else {\
+               return wrap_func(g(x.value));\
+          }\
+     } else { return x;}\
+}\
+
+```
 
 
 # Random Numbers:
