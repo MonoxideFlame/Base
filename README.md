@@ -28,7 +28,7 @@ Relaxing some of these requirements on the API is enough to massively improve th
 # What allocator should we use?
 
 The simplest allocator is a Linear Allocator, or an Arena. Its a block of memory with a pointer. We increment the pointer whenever we allocate. Then we free/clear the whole block at once. 
-This is useful because it lets us re-use memory.
+This is useful because it lets us efficiently allocate a huge bunch of objects and clear it efficiently when we re-use memory.
 
 In a game, each frame has some data that needs to be allocated and rewritten all the time. Its easy to then reset the pointer to 0 when a frame ends,
 after which, we start allocating again in the same block. We get good cache locality and everything remains very fast. It has use in all kinds of places. 
@@ -39,7 +39,7 @@ It is a great way to allocate variables with the same lifetime to be freed all a
 each node, we just allocate all the nodes to the same memory bucket (Arena), and then just free them all at once. It minimizes memory leak possibilities to a few large buckets containing most allocations, 
 while keeping things fast. 
 
-Pool allocators also work very well. However, they have a fixed size. So these are used in very specific situations where the order of allocation and deallocation is unknown, but the size is fixed. 
+Pool allocators also work very well. However, they have a fixed size. So these are used in very specific situations where the order of allocation and deallocation is unknown, but the size of each is fixed. 
 Malloc still works for everything else, though I only use it sparingly. This system helps me completely eliminate memory leaks. Pool Allocators are very easy to build on top of the Arena API
 
 
