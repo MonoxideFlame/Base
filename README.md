@@ -78,6 +78,11 @@ type_name bind_func ( (type_name)(*f)(T), (T)(*g)(T), type_name x ){\
      } else { return x;}\
 }\
 
+
+DECLARE_RESULT_MONAD(float, RESULT_FLOAT, run_result_with_float)
+
+
+
 ```
 
 
